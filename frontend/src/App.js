@@ -16,6 +16,8 @@ import UCSBDatesIndexPage from "main/pages/UCSBDates/UCSBDatesIndexPage";
 import UCSBDatesCreatePage from "main/pages/UCSBDates/UCSBDatesCreatePage";
 import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
 
+import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganizationsIndexPage";
+
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
@@ -61,7 +63,8 @@ function App() {
         {
           hasRole(currentUser, "ROLE_USER") && (
             <>
-              <Route exact path="/ucsbdates/list" element={<UCSBDatesIndexPage />} />
+		  <Route exact path="/ucsbdates/list" element={<UCSBDatesIndexPage />} />
+		  <Route exact path="/UCSBOrganizations/list" element={<UCSBOrganizationsIndexPage />} />
             </>
           )
         }
