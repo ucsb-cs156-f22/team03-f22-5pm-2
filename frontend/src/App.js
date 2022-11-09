@@ -87,29 +87,6 @@ function App() {
             />
           </>
         )}
-        {hasRole(currentUser, "ROLE_USER") && (
-          <>
-            <Route
-              exact
-              path="/recommendation/list"
-              element={<RecommendationIndexPage />}
-            />
-          </>
-        )}
-        {hasRole(currentUser, "ROLE_ADMIN") && (
-          <>
-            <Route
-              exact
-              path="/recommendation/create"
-              element={<RecommendationCreatePage />}
-            />
-            <Route
-              exact
-              path="/recommendation/edit/:id"
-              element={<RecommendationEditPage />}
-            />
-          </>
-        )}
       </Routes>
     </BrowserRouter>
   );
