@@ -6,9 +6,9 @@ import { useCurrentUser } from 'main/utils/currentUser' // use prefix indicates 
 
 export default function RecommendationIndexPage() {
 
-  const currentUser = useCurrentUser();
+  // const currentUser = useCurrentUser();
 
-  const { data: recommendation, error: _error, status: _status } =
+  const { error: _error, status: _status } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
       ["/api/recommendation/all"],
