@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganizationsIndexPage";
@@ -8,7 +8,6 @@ import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import mockConsole from "jest-mock-console";
 
 
 const mockToast = jest.fn();
@@ -24,8 +23,6 @@ jest.mock('react-toastify', () => {
 describe("UCSBOrganizationsIndexPage tests", () => {
 
     const axiosMock =new AxiosMockAdapter(axios);
-
-    const testId = "UCSBOrganizationsIndexPage";
 
     const setupUserOnly = () => {
         axiosMock.reset();
