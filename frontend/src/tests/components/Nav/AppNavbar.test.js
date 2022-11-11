@@ -262,7 +262,7 @@ describe("AppNavbar tests", () => {
     });
 
     test("renders the menuitemreview menu correctly for an admin", async () => {
-
+    
         const currentUser = currentUserFixtures.adminUser;
         const systemInfo = systemInfoFixtures.showingBoth;
 
@@ -275,7 +275,6 @@ describe("AppNavbar tests", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-
         await waitFor(() => expect(getByTestId("appnavbar-menuitemreview-dropdown")).toBeInTheDocument());
         const dropdown = getByTestId("appnavbar-menuitemreview-dropdown");
         const aElement = dropdown.querySelector("a");
@@ -299,7 +298,6 @@ describe("AppNavbar tests", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-
 
         await waitFor(() => expect(getByTestId("appnavbar-ucsb-dining-commons-menuitem-dropdown")).toBeInTheDocument());
         const dropdown = getByTestId("appnavbar-ucsb-dining-commons-menuitem-dropdown");
@@ -379,5 +377,30 @@ describe("AppNavbar tests", () => {
         aElement?.click();
         await waitFor( () => expect(getByTestId(/appnavbar-helprequests-create/)).toBeInTheDocument() );
     
+    });
+    
+    test("renders the UCSBOrganization menu correctly for an admin", async () => {
+    
+        const currentUser = currentUserFixtures.adminUser;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        const {getByTestId  } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+        
+        await waitFor(() => expect(getByTestId("appnavbar-ucsborganizations-dropdown")).toBeInTheDocument());
+        const dropdown = getByTestId("appnavbar-ucsborganizations-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();
+        await waitFor( () => expect(getByTestId(/appnavbar-ucsborganizations-list/)).toBeInTheDocument() );
+	      await waitFor( () => expect(getByTestId(/appnavbar-ucsborganizations-create/)).toBeInTheDocument() );
+
     });
 });
