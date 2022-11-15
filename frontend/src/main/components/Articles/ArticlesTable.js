@@ -1,39 +1,39 @@
-import OurTable, { ButtonColumn} from "main/components/OurTable";
+import OurTable, { ButtonColumn } from "main/components/OurTable";
 import { useBackendMutation } from "main/utils/useBackend";
-import {  cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/ArticlesUtils"
-import { useNavigate } from "react-router-dom";
+import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/articleUtils"
+import { _useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 
-export default function ArticlesTable({ articles, currentUser }) {
+export default function ArticlesTable({ article, currentUser }) {
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const editCallback = (cell) => {
-        navigate(`/articles/edit/${cell.row.values.code}`)
-    }
+    // const editCallback = (cell) => {
+    //     navigate(`/ucsbdates/edit/${cell.row.values.id}`)
+    // }
 
-    //Stryker disable all : hard to test for query caching
+    // Stryker disable all : hard to test for query caching
     const deleteMutation = useBackendMutation(
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
-        ["/api/Articles/all"]
+        ["/api/Article/all"]
     );
-    //Stryker enable all 
+    // Stryker enable all 
 
-    // Stryker disable next-line all : TODO try to make a good test for this
+    // Stryker disable next-line all
     const deleteCallback = async (cell) => { deleteMutation.mutate(cell); }
-    
+
     const columns = [
         {
-            Header: 'Id',
-            accessor: 'id', 
+            Header: 'id',
+            accessor: 'id', // accessor is the "key" in the data
         },
         {
             Header: 'Title',
             accessor: 'title',
         },
         {
-            Header: 'Url',
+            Header: 'URL',
             accessor: 'url',
         },
         {
@@ -45,47 +45,25 @@ export default function ArticlesTable({ articles, currentUser }) {
             accessor: 'email',
         },
         {
-            Header: 'DateAdded',
+            Header: 'Date Added',
             accessor: 'dateAdded',
         }
-        /*{
-            Header: 'Url',
-            id: 'url', // needed for tests
-            accessor: (row, _rowIndex) => String(row.hasSackMeal) // hack needed for boolean values to show up
-        },
-        {
-            Header: 'Takeout Meal?',
-            id: 'hasTakeOutMeal', // needed for tests
-            accessor: (row, _rowIndex) => String(row.hasTakeOutMeal) // hack needed for boolean values to show up
-
-        },
-        {
-            Header: 'Dining Cam?',
-            id: 'hasDiningCam', // needed for tests
-            accessor: (row, _rowIndex) => String(row.hasDiningCam) // hack needed for boolean values to show up
-        },
-        {
-            Header: 'Latitude',
-            accessor: 'latitude',
-        },
-        {
-            Header: 'Longitude',
-            accessor: 'longitude',
-        }*/
     ];
 
     const testid = "ArticlesTable";
 
     const columnsIfAdmin = [
         ...columns,
-        ButtonColumn("Edit", "primary", editCallback, testid),
+        // ButtonColumn("Edit", "primary", editCallback, "UCSBDatesTable"),
         ButtonColumn("Delete", "danger", deleteCallback, testid)
     ];
 
     const columnsToDisplay = hasRole(currentUser, "ROLE_ADMIN") ? columnsIfAdmin : columns;
 
+    // const columnsToDisplay = columns;
+
     return <OurTable
-        data={articles}
+        data={article}
         columns={columnsToDisplay}
         testid={testid}
     />;

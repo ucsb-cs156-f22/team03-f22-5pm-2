@@ -1,8 +1,7 @@
 import React from 'react';
 
-import ArticlesTable from "main/components/Articles/ArticlesTable";
-import { ArticlesFixtures } from 'fixtures/ArticlesFixtures';
-import { currentUserFixtures } from 'fixtures/currentUserFixtures';
+import ArticlesTable from 'main/components/Articles/ArticlesTable';
+import { articlesFixtures } from 'fixtures/articlesFixtures';
 
 export default {
     title: 'components/Articles/ArticlesTable',
@@ -18,18 +17,11 @@ const Template = (args) => {
 export const Empty = Template.bind({});
 
 Empty.args = {
-    Articles: []
+    article: []
 };
 
-export const ThreeDates = Template.bind({});
+export const ThreeArticles = Template.bind({});
 
-ThreeDates.args = {
-    Articles: ArticlesFixtures.threeMenuItems
-};
-
-export const ThreeDatesAsAdmin = Template.bind({});
-
-ThreeDatesAsAdmin.args = {
-    Articles: ArticlesFixtures.oneArticle,
-    currentUser: currentUserFixtures.adminUser
+ThreeArticles.args = {
+    article: articlesFixtures.threeArticles
 };

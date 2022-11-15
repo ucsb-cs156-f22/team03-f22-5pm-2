@@ -4,9 +4,9 @@ import { MemoryRouter } from "react-router-dom";
 import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
 
 
-import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
+import { apiCurrentUserFixtures }  from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { ArticlesFixtures } from "fixtures/ArticlesFixtures";
+import { articlesFixtures } from "fixtures/articlesFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 import mockConsole from "jest-mock-console";
@@ -50,7 +50,7 @@ describe("ArticlesIndexPage tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <DiningCommonsMenuItemIndexPage />
+                    <ArticlesIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -74,10 +74,10 @@ describe("ArticlesIndexPage tests", () => {
 
     });
 
-    test("renders three menu items without crashing for regular user", async () => {
+    test("renders three articles without crashing for regular user", async () => {
         setupUserOnly();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").reply(200, ArticlesFixtures.threeMenuItems);
+        axiosMock.onGet("/api/Articles/all").reply(200, articlesFixtures.threeArticles);
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
@@ -87,16 +87,16 @@ describe("ArticlesIndexPage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); });
-        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
-        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
+        await waitFor(  () => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); } );
+        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
+        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
 
     });
 
-    test("renders three menu items without crashing for admin user", async () => {
+    test("renders three articles without crashing for admin user", async () => {
         setupAdminUser();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").reply(200, ArticlesFixtures.threeMenuItems);
+        axiosMock.onGet("/api/Articles/all").reply(200, articlesFixtures.threeArticles);
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
@@ -106,9 +106,9 @@ describe("ArticlesIndexPage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); });
-        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
-        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
+        await waitFor(  () => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); } );
+        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
+        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
 
     });
 
@@ -138,8 +138,8 @@ describe("ArticlesIndexPage tests", () => {
         setupAdminUser();
 
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").reply(200, ArticlesFixtures.threeMenuItems);
-        axiosMock.onDelete("/api/Articles").reply(200, "Articles Menu Item with id 1 was deleted");
+        axiosMock.onGet("/api/Articles/all").reply(200, articlesFixtures.threeArticles);
+        axiosMock.onDelete("/api/Articles",).reply(200, "Article with id 2 was deleted");
 
 
         const { getByTestId } = render(
@@ -152,7 +152,7 @@ describe("ArticlesIndexPage tests", () => {
 
         await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toBeInTheDocument(); });
 
-       expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); 
+       expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); 
 
 
         const deleteButton = getByTestId(`${testId}-cell-row-0-col-Delete-button`);
@@ -160,8 +160,7 @@ describe("ArticlesIndexPage tests", () => {
        
         fireEvent.click(deleteButton);
 
-        await waitFor(() => { expect(mockToast).toBeCalledWith("Dining Commons Menu Item with id 1 was deleted") });
+        await waitFor(() => { expect(mockToast).toBeCalledWith("Article with id 2 was deleted") });
 
     });
-
 });
