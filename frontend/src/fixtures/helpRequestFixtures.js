@@ -9,6 +9,14 @@ const helpRequestFixtures = {
     },
     threeRequests: [
         {
+            "id": "1",
+            "requesterEmail": "michael@gmail.com",
+            "teamId": "team1",
+            "tableOrBreakoutRoom": "table",
+            "explanation": "lorem",
+            "solved": false
+        },
+        {
             "id": "2",
             "requesterEmail": "michael@gmail.com",
             "teamId": "team1",
@@ -18,14 +26,6 @@ const helpRequestFixtures = {
         },
         {
             "id": "3",
-            "requesterEmail": "michael@gmail.com",
-            "teamId": "team1",
-            "tableOrBreakoutRoom": "table",
-            "explanation": "lorem",
-            "solved": false
-        },
-        {
-            "id": "4",
             "requesterEmail": "michael@gmail.com",
             "teamId": "team1",
             "tableOrBreakoutRoom": "table",

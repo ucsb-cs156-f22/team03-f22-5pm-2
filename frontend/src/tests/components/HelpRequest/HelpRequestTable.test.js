@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { __fireEvent, render, __waitFor} from "@testing-library/react";
 import { helpRequestFixtures } from "fixtures/helpRequestFixtures";
 import HelpRequestTable from "main/components/HelpRequest/HelpRequestTable";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -82,10 +82,10 @@ describe("HelpRequestTable tests", () => {
       expect(header).toBeInTheDocument();
     });
 
-    expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
-    expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
-    expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
-    expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
+    expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
+    expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
+    expect(getByTestId(`${testId}-cell-row-0-col-requesterEmail`)).toHaveTextContent("michael@gmail.com");
+    expect(getByTestId(`${testId}-cell-row-1-col-requesterEmail`)).toHaveTextContent("michael@gmail.com");
 
     const deleteButton = getByTestId(`${testId}-cell-row-0-col-Delete-button`);
     expect(deleteButton).toBeInTheDocument();
