@@ -124,8 +124,6 @@ describe("ReviewIndexPage tests", () => {
 
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/menuitemreview/all").timeout();
-
-        const restoreConsole = mockConsole(); 
         
         const { queryByTestId } = render(
             <QueryClientProvider client={queryClient}>
@@ -136,7 +134,6 @@ describe("ReviewIndexPage tests", () => {
         );
 
         await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
-        restoreConsole();
 
         expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
     });
@@ -167,7 +164,7 @@ describe("ReviewIndexPage tests", () => {
        
         fireEvent.click(deleteButton);
 
-        await waitFor(() => { expect(mockToast).toBeCalledWith("Review with id 1 was deleted") });
+        await waitFor(() => { expect(mockToast).toBeCalledWith("MenuItemReview with id 1 was deleted") });
 
     });
 

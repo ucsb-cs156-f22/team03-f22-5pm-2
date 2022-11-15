@@ -8,9 +8,9 @@ export default function ReviewTable({ menuItem, currentUser }) {
 
     const navigate = useNavigate();
 
-    const editCallback = (cell) => {
-        navigate(`/menuitemreview/edit/${cell.row.values.id}`)
-    }
+    // const editCallback = (cell) => {
+    //     navigate(`/menuitemreview/edit/${cell.row.values.id}`)
+    // }
 
     // Stryker disable all : hard to test for query caching
     const deleteMutation = useBackendMutation(
@@ -52,7 +52,7 @@ export default function ReviewTable({ menuItem, currentUser }) {
 
     const columnsIfAdmin = [
         ...columns,
-        ButtonColumn("Edit", "primary", editCallback, "ReviewTable"),
+        // ButtonColumn("Edit", "primary", editCallback, "ReviewTable"),
         ButtonColumn("Delete", "danger", deleteCallback, "ReviewTable")
     ];
 

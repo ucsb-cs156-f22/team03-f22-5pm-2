@@ -23,7 +23,7 @@ describe("ReviewTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <ReviewTable review={[]} currentUser={currentUser} />
+          <ReviewTable menuItem={[]} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
@@ -35,7 +35,7 @@ describe("ReviewTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <ReviewTable review={[]} currentUser={currentUser} />
+          <ReviewTable menuItem={[]} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
@@ -48,7 +48,7 @@ describe("ReviewTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <ReviewTable review={[]} currentUser={currentUser} />
+          <ReviewTable menuItem={[]} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
@@ -62,7 +62,7 @@ describe("ReviewTable tests", () => {
     const { getByText, getByTestId } = render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <ReviewTable review={reviewFixtures.threeItems} currentUser={currentUser} />
+          <ReviewTable menuItem={reviewFixtures.threeItems} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
@@ -70,7 +70,7 @@ describe("ReviewTable tests", () => {
 
 
     const expectedHeaders = ['ID',  'Item ID', 'Comments','Date Reviewed','Reviewer Email','Stars'];
-    const expectedFields = ['id', 'itemid','comments', 'datereviewed','revieweremail','stars'];
+    const expectedFields = ['id', 'itemId','comments', 'dateReviewed','reviewerEmail','stars'];
     const testId = "ReviewTable";
 
     expectedHeaders.forEach((headerText) => {
@@ -88,37 +88,9 @@ describe("ReviewTable tests", () => {
     expect(getByTestId(`${testId}-cell-row-0-col-itemId`)).toHaveTextContent("1");
     expect(getByTestId(`${testId}-cell-row-1-col-itemId`)).toHaveTextContent("2");
 
-    const editButton = getByTestId(`${testId}-cell-row-0-col-Edit-button`);
-    expect(editButton).toBeInTheDocument();
-    expect(editButton).toHaveClass("btn-primary");
-
     const deleteButton = getByTestId(`${testId}-cell-row-0-col-Delete-button`);
     expect(deleteButton).toBeInTheDocument();
     expect(deleteButton).toHaveClass("btn-danger");
-
-  });
-
-  test("Edit button navigates to the edit page for admin user", async () => {
-
-    const currentUser = currentUserFixtures.adminUser;
-
-    const { getByTestId } = render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <ReviewTable review={reviewFixtures.threeItems} currentUser={currentUser} />
-        </MemoryRouter>
-      </QueryClientProvider>
-
-    );
-
-    await waitFor(() => { expect(getByTestId(`ReviewTable-cell-row-0-col-id`)).toHaveTextContent("1"); });
-
-    const editButton = getByTestId(`ReviewTable-cell-row-0-col-Edit-button`);
-    expect(editButton).toBeInTheDocument();
-    
-    fireEvent.click(editButton);
-
-    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith('/menuitemreview/edit/1'));
 
   });
 
