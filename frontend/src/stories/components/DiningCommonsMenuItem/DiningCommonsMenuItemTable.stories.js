@@ -30,6 +30,6 @@ ThreeDates.args = {
 export const ThreeDatesAsAdmin = Template.bind({});
 
 ThreeDatesAsAdmin.args = {
-    diningCommonsMenuItem: diningCommonsFixtures.threeCommons,
+    diningCommonsMenuItem: diningCommonsMenuItemFixtures.threeCommons,
     currentUser: currentUserFixtures.adminUser
 };
