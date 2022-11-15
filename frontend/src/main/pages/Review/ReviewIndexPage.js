@@ -9,7 +9,7 @@ export default function ReviewIndexPage() {
 
   const currentUser = useCurrentUser();
 
-  const { data: menuItem, error: _error, status: _status } =
+  const { data: review, error: _error, status: _status } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
       ["/api/menuitemreview/all"],
@@ -22,7 +22,7 @@ export default function ReviewIndexPage() {
     <BasicLayout>
       <div className="pt-2">
         <h1>Menu Item Review</h1>
-        <ReviewTable menuItem={menuItem} currentUser={currentUser} />
+        <ReviewTable menuItem={review} currentUser={currentUser} />
       </div>
     </BasicLayout>
   )
