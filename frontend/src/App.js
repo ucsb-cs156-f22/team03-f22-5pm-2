@@ -18,6 +18,9 @@ import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
 import DiningCommonsMenuItemIndexPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemIndexPage";
 import DiningCommonsMenuItemCreatePage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemCreatePage";
 import DiningCommonsMenuItemEditPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemEditPage";
+import HelpRequestIndexPage from "main/pages/HelpRequest/HelpRequestIndexPage.js"
+import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganizationsIndexPage";
+import ReviewIndexPage from "main/pages/MenuItemReview/ReviewIndexPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
@@ -63,15 +66,30 @@ function App() {
         {
           hasRole(currentUser, "ROLE_USER") && (
             <>
-              <Route exact path="/ucsbdates/list" element={<UCSBDatesIndexPage />} />
+		  <Route exact path="/ucsbdates/list" element={<UCSBDatesIndexPage />} />
+		  <Route exact path="/UCSBOrganizations/list" element={<UCSBOrganizationsIndexPage />} />
             </>
           )
         }
-        {
+        {/* {
           hasRole(currentUser, "ROLE_ADMIN") && (
             <>
               <Route exact path="/ucsbdates/create" element={<UCSBDatesCreatePage />} />
               <Route exact path="/ucsbdates/edit/:id" element={<UCSBDatesEditPage />} />
+            </>
+          )
+        } */}
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/helprequests/list" element={<HelpRequestIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/menuitemreview/list" element={<ReviewIndexPage />} />
             </>
           )
         }
