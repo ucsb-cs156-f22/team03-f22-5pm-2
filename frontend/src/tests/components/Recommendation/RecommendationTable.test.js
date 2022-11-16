@@ -83,10 +83,8 @@ describe("Recommendation tests", () => {
       expect(header).toBeInTheDocument();
     });
 
-    expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
-    expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
-    expect(getByTestId(`${testId}-cell-row-0-col-itemId`)).toHaveTextContent("1");
-    expect(getByTestId(`${testId}-cell-row-1-col-itemId`)).toHaveTextContent("2");
+    expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
+    expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
 
     const deleteButton = getByTestId(`${testId}-cell-row-0-col-Delete-button`);
     expect(deleteButton).toBeInTheDocument();
