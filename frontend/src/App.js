@@ -11,13 +11,23 @@ import DiningCommonsIndexPage from "main/pages/DiningCommons/DiningCommonsIndexP
 import DiningCommonsCreatePage from "main/pages/DiningCommons/DiningCommonsCreatePage";
 import DiningCommonsEditPage from "main/pages/DiningCommons/DiningCommonsEditPage";
 
-import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
-
-
 import UCSBDatesIndexPage from "main/pages/UCSBDates/UCSBDatesIndexPage";
 import UCSBDatesCreatePage from "main/pages/UCSBDates/UCSBDatesCreatePage";
 import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
 
+import DiningCommonsMenuItemIndexPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemIndexPage";
+import DiningCommonsMenuItemCreatePage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemCreatePage";
+import DiningCommonsMenuItemEditPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemEditPage";
+
+import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
+
+import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganizationsIndexPage";
+
+import HelpRequestIndexPage from "main/pages/HelpRequest/HelpRequestIndexPage";
+
+import ReviewIndexPage from "main/pages/Review/ReviewIndexPage";
+
+import RecommendationIndexPage from "main/pages/Recommendation/RecommendationIndexPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
@@ -76,16 +86,65 @@ function App() {
           )
         }
         {
+           hasRole(currentUser, "ROLE_USER") && (
+             <>
+               <Route exact path="/diningCommonsMenuItem/list" element={<DiningCommonsMenuItemIndexPage />} />
+             </>
+           )
+         }
+         {
+           hasRole(currentUser, "ROLE_ADMIN") && (
+             <>
+               <Route exact path="/diningCommonsMenuItem/create" element={<DiningCommonsMenuItemCreatePage />} />
+               <Route exact path="/diningCommonsMenuItem/edit/:id" element={<DiningCommonsMenuItemEditPage />} />
+             </>
+           )
+         }
+        {
           hasRole(currentUser, "ROLE_USER") && (
             <>
               <Route exact path="/Articles/list" element={<ArticlesIndexPage />} />
             </>
           )
         }
+       
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/UCSBOrganizations/list" element={<UCSBOrganizationsIndexPage />} />
+            </>
+          )
+        }
+
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/helprequests/list" element={<HelpRequestIndexPage />} />
+            </>
+          )
+        }
+
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/menuitemreview/list" element={<ReviewIndexPage />} />
+            </>
+          )
+        }  
+
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/recommendation/list" element={<RecommendationIndexPage />} />
+            </>
+          )
+        }   
+        
 
       </Routes>
     </BrowserRouter>
   );
 }
+
 
 export default App;
