@@ -1,4 +1,4 @@
-import { render, waitFor} from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
@@ -403,4 +403,61 @@ describe("AppNavbar tests", () => {
 	      await waitFor( () => expect(getByTestId(/appnavbar-ucsborganizations-create/)).toBeInTheDocument() );
 
     });
+
+    test("renders the recommendation menu correctly for a user", async () => {
+      const currentUser = currentUserFixtures.userOnly;
+      const systemInfo = systemInfoFixtures.showingBoth;
+  
+      const doLogin = jest.fn();
+  
+      const { getByTestId } = render(
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <AppNavbar
+              currentUser={currentUser}
+              systemInfo={systemInfo}
+              doLogin={doLogin}
+            />
+          </MemoryRouter>
+        </QueryClientProvider>
+      );
+  
+      await waitFor(() =>
+        expect(
+          getByTestId("appnavbar-recommendation-dropdown")
+        ).toBeInTheDocument()
+      );
+      const dropdown = getByTestId("appnavbar-recommendation-dropdown");
+      const aElement = dropdown.querySelector("a");
+      expect(aElement).toBeInTheDocument();
+      aElement?.click();
+      await waitFor(() =>
+        expect(getByTestId("appnavbar-recommendation-list")).toBeInTheDocument()
+      );
+    });
+    
+    test("renders the recommendation menu correctly for an admin", async () => {
+    
+      const currentUser = currentUserFixtures.adminUser;
+      const systemInfo = systemInfoFixtures.showingBoth;
+
+      const doLogin = jest.fn();
+
+      const {getByTestId  } = render(
+          <QueryClientProvider client={queryClient}>
+              <MemoryRouter>
+                  <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+              </MemoryRouter>
+          </QueryClientProvider>
+      );
+      
+      await waitFor(() => expect(getByTestId("appnavbar-recommendation-dropdown")).toBeInTheDocument());
+      const dropdown = getByTestId("appnavbar-recommendation-dropdown");
+      const aElement = dropdown.querySelector("a");
+      expect(aElement).toBeInTheDocument();
+      aElement?.click();
+      await waitFor( () => expect(getByTestId(/appnavbar-recommendation-list/)).toBeInTheDocument() );
+      await waitFor( () => expect(getByTestId(/appnavbar-recommendation-create/)).toBeInTheDocument() );
+
+  });
 });
