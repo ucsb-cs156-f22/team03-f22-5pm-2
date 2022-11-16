@@ -16,6 +16,8 @@ import UCSBDatesIndexPage from "main/pages/UCSBDates/UCSBDatesIndexPage";
 // import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
 
 import HelpRequestIndexPage from "main/pages/HelpRequest/HelpRequestIndexPage.js"
+import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganizationsIndexPage";
+import ReviewIndexPage from "main/pages/MenuItemReview/ReviewIndexPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
@@ -61,7 +63,8 @@ function App() {
         {
           hasRole(currentUser, "ROLE_USER") && (
             <>
-              <Route exact path="/ucsbdates/list" element={<UCSBDatesIndexPage />} />
+		  <Route exact path="/ucsbdates/list" element={<UCSBDatesIndexPage />} />
+		  <Route exact path="/UCSBOrganizations/list" element={<UCSBOrganizationsIndexPage />} />
             </>
           )
         }
@@ -77,6 +80,13 @@ function App() {
           hasRole(currentUser, "ROLE_USER") && (
             <>
               <Route exact path="/helprequests/list" element={<HelpRequestIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/menuitemreview/list" element={<ReviewIndexPage />} />
             </>
           )
         }
