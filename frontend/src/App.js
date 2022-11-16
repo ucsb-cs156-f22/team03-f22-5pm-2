@@ -21,7 +21,6 @@ import DiningCommonsMenuItemCreatePage from "main/pages/DiningCommonsMenuItem/Di
 import DiningCommonsMenuItemEditPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemEditPage";
 import HelpRequestIndexPage from "main/pages/HelpRequest/HelpRequestIndexPage.js"
 import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganizationsIndexPage";
-import ReviewIndexPage from "main/pages/MenuItemReview/ReviewIndexPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
