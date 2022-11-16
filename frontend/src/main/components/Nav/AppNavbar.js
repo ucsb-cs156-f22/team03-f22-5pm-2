@@ -55,59 +55,19 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
                   </NavDropdown>
                 )
               }
-              {
-                hasRole(currentUser, "ROLE_USER") && (
-                  <NavDropdown title="Menu Items" id="appnavbar-menu-items-dropdown" data-testid="appnavbar-menu-items-dropdown" >
-                    <NavDropdown.Item as={Link} to="/menuitems/list" data-testid="appnavbar-menu-items-list">List</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/menuitems/create" data-testid="appnavbar-menu-items-create">Create</NavDropdown.Item>
-                  </NavDropdown>
-                )
-              }
-              {
-                hasRole(currentUser, "ROLE_USER") && (
-                  <NavDropdown title="Organizations" id="appnavbar-organizations-dropdown" data-testid="appnavbar-organizations-dropdown" >
-                    <NavDropdown.Item as={Link} to="/organizations/list" data-testid="appnavbar-organizations-list">List</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/organizations/create" data-testid="appnavbar-organizations-create">Create</NavDropdown.Item>
-                  </NavDropdown>
-                )
-              }
-              {
-                hasRole(currentUser, "ROLE_USER") && (
-                  <NavDropdown title="Recommendations" id="appnavbar-recommendations-dropdown" data-testid="appnavbar-recommendations-dropdown" >
-                    <NavDropdown.Item as={Link} to="/recommendations/list" data-testid="appnavbar-recommendations-list">List</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/recommendations/create" data-testid="appnavbar-recommendations-create">Create</NavDropdown.Item>
-                  </NavDropdown>
-                )
-              }
                {
                 hasRole(currentUser, "ROLE_USER") && (
-                  <NavDropdown title="Reviews" id="appnavbar-reviews-dropdown" data-testid="appnavbar-reviews-dropdown" >
-                    <NavDropdown.Item as={Link} to="/reviews/list" data-testid="appnavbar-reviews-list">List</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/reviews/create" data-testid="appnavbar-reviews-create">Create</NavDropdown.Item>
-                  </NavDropdown>
-                )
-              }
-              {
-                hasRole(currentUser, "ROLE_USER") && (
-                  <NavDropdown title="Help Requests" id="appnavbar-help-requests-dropdown" data-testid="appnavbar-help-requests-dropdown" >
-                    <NavDropdown.Item as={Link} to="/helprequests/list" data-testid="appnavbar-help-requests-list">List</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/helprequests/create" data-testid="appnavbar-help-requests-create">Create</NavDropdown.Item>
+                  <NavDropdown title="Dining Commons" id="appnavbar-dining-commons-dropdown" data-testid="appnavbar-dining-commons-dropdown" >
+                    <NavDropdown.Item as={Link} to="/diningCommons/list" data-testid="appnavbar-dining-commons-list">List</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/diningCommons/create" data-testid="appnavbar-dining-commons-create">Create</NavDropdown.Item>
                   </NavDropdown>
                 )
               }
               {
                 hasRole(currentUser, "ROLE_USER") && (
                   <NavDropdown title="Articles" id="appnavbar-articles-dropdown" data-testid="appnavbar-articles-dropdown" >
-                    <NavDropdown.Item as={Link} to="/articles/list" data-testid="appnavbar-articles-list">List</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/articles/create" data-testid="appnavbar-articles-create">Create</NavDropdown.Item>
-                  </NavDropdown>
-                )
-              }
-               {
-                hasRole(currentUser, "ROLE_USER") && (
-                  <NavDropdown title="Dining Commons" id="appnavbar-dining-commons-dropdown" data-testid="appnavbar-dining-commons-dropdown" >
-                    <NavDropdown.Item as={Link} to="/diningCommons/list" data-testid="appnavbar-dining-commons-list">List</NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/diningCommons/create" data-testid="appnavbar-dining-commons-create">Create</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/Articles/list" data-testid="appnavbar-articles-list">List</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/Articles/create" data-testid="appnavbar-articles-create">Create</NavDropdown.Item>
                   </NavDropdown>
                 )
               }

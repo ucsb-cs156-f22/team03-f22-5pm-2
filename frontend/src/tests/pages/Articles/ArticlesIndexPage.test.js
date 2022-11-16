@@ -1,166 +1,289 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { render, waitFor} from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
+import { currentUserFixtures } from "fixtures/currentUserFixtures";
 
-
-import { apiCurrentUserFixtures }  from "fixtures/currentUserFixtures";
+import AppNavbar from "main/components/Nav/AppNavbar";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { articlesFixtures } from "fixtures/ArticlesFixtures";
-import axios from "axios";
-import AxiosMockAdapter from "axios-mock-adapter";
-import mockConsole from "jest-mock-console";
 
+describe("AppNavbar tests", () => {
 
-const mockToast = jest.fn();
-jest.mock('react-toastify', () => {
-    const originalModule = jest.requireActual('react-toastify');
-    return {
-        __esModule: true,
-        ...originalModule,
-        toast: (x) => mockToast(x)
-    };
-});
+    const queryClient = new QueryClient();
 
-describe("ArticlesIndexPage tests", () => {
+    test("renders correctly for regular logged in user", async () => {
 
-    const axiosMock =new AxiosMockAdapter(axios);
+        const currentUser = currentUserFixtures.userOnly;
+        const doLogin = jest.fn();
 
-    const testId = "ArticlesTable";
-
-    const setupUserOnly = () => {
-        axiosMock.reset();
-        axiosMock.resetHistory();
-        axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-        axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
-    };
-
-    const setupAdminUser = () => {
-        axiosMock.reset();
-        axiosMock.resetHistory();
-        axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.adminUser);
-        axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
-    };
-
-    test("renders without crashing for regular user", () => {
-        setupUserOnly();
-        const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").reply(200, []);
-
-        render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <ArticlesIndexPage />
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-
+        await waitFor(() => expect(getByText("Welcome, pconrad.cis@gmail.com")).toBeInTheDocument());
     });
 
-    test("renders without crashing for admin user", () => {
-        setupAdminUser();
-        const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").reply(200, []);
+    test("renders correctly for admin user", async () => {
 
-        render(
+        const currentUser = currentUserFixtures.adminUser;
+        const doLogin = jest.fn();
+
+        const { getByText , getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <ArticlesIndexPage />
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-
+        await waitFor(() => expect(getByText("Welcome, phtcon@ucsb.edu")).toBeInTheDocument());
+        const adminMenu = getByTestId("appnavbar-admin-dropdown");
+        expect(adminMenu).toBeInTheDocument();        
     });
 
-    test("renders three articles without crashing for regular user", async () => {
-        setupUserOnly();
-        const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").reply(200, articlesFixtures.threeArticles);
+    test("renders H2Console and Swagger links correctly", async () => {
 
-        const { getByTestId } = render(
+        const currentUser = currentUserFixtures.adminUser;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        const { getByText  } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <ArticlesIndexPage />
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        await waitFor(  () => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); } );
-        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
-        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
-
+        await waitFor(() => expect(getByText("H2Console")).toBeInTheDocument());
+        const swaggerMenu = getByText("Swagger");
+        expect(swaggerMenu).toBeInTheDocument();        
     });
 
-    test("renders three articles without crashing for admin user", async () => {
-        setupAdminUser();
-        const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").reply(200, articlesFixtures.threeArticles);
 
-        const { getByTestId } = render(
+    test("renders the todos menu correctly", async () => {
+
+        const currentUser = currentUserFixtures.userOnly;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        const {getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <ArticlesIndexPage />
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        await waitFor(  () => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); } );
-        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
-        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
-
+        await waitFor(() => expect(getByTestId("appnavbar-todos-dropdown")).toBeInTheDocument());
     });
 
-    test("renders empty table when backend unavailable, user only", async () => {
-        setupUserOnly();
+    test("renders the AppNavbarLocalhost when on http://localhost:3000", async () => {
 
-        const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").timeout();
+        const currentUser = currentUserFixtures.userOnly;
+        const systemInfo = systemInfoFixtures.showingBoth;
+        const doLogin = jest.fn();
 
-        const restoreConsole = mockConsole();
+        delete window.location
+        window.location = new URL('http://localhost:3000')
 
-        const { queryByTestId } = render(
+        const {getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <ArticlesIndexPage />
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
-        restoreConsole();
-
-        expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
+        await waitFor(() => expect(getByTestId("AppNavbarLocalhost")).toBeInTheDocument());
     });
 
-    test("test what happens when you click delete, admin", async () => {
-        setupAdminUser();
+    test("renders the AppNavbarLocalhost when on http://127.0.0.1:3000", async () => {
 
-        const queryClient = new QueryClient();
-        axiosMock.onGet("/api/Articles/all").reply(200, articlesFixtures.threeArticles);
-        axiosMock.onDelete("/api/Articles",).reply(200, "Article with id 2 was deleted");
+        const currentUser = currentUserFixtures.userOnly;
+        const systemInfo = systemInfoFixtures.showingBoth;
+        const doLogin = jest.fn();
 
+        delete window.location
+        window.location = new URL('http://127.0.0.1:3000')
 
-        const { getByTestId } = render(
+        const {getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <ArticlesIndexPage />
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toBeInTheDocument(); });
+        await waitFor(() => expect(getByTestId("AppNavbarLocalhost")).toBeInTheDocument());
+    });
 
-       expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); 
+    test("renders the AppNavbarLocalhost when on http://127.0.0.1:3000", async () => {
 
+        const currentUser = currentUserFixtures.userOnly;
+        const systemInfo = systemInfoFixtures.showingBoth;
+        const doLogin = jest.fn();
 
-        const deleteButton = getByTestId(`${testId}-cell-row-0-col-Delete-button`);
-        expect(deleteButton).toBeInTheDocument();
-       
-        fireEvent.click(deleteButton);
+        delete window.location
+        window.location = new URL('http://127.0.0.1:3000')
 
-        await waitFor(() => { expect(mockToast).toBeCalledWith("Article with id 2 was deleted") });
+        const {getByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByTestId("AppNavbarLocalhost")).toBeInTheDocument());
 
     });
+
+    test("does NOT render the AppNavbarLocalhost when on localhost:8080", async () => {
+
+        const currentUser = currentUserFixtures.userOnly;
+        const systemInfo = systemInfoFixtures.showingBoth;
+        const doLogin = jest.fn();
+
+        delete window.location
+        window.location = new URL('http://localhost:8080')
+
+        const {getByTestId, queryByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByTestId("AppNavbar")).toBeInTheDocument());
+        expect(queryByTestId(/AppNavbarLocalhost/i)).toBeNull();
+    });
+
+    test("renders the articles menu correctly for a user", async () => {
+
+        const currentUser = currentUserFixtures.userOnly;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        const {getByTestId  } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByTestId("appnavbar-articles-dropdown")).toBeInTheDocument());
+        const dropdown = getByTestId("appnavbar-articles-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();
+        await waitFor( () => expect(getByTestId("appnavbar-articles-list")).toBeInTheDocument() );
+
+    });
+
+    test("renders the articles menu correctly for an admin", async () => {
+
+        const currentUser = currentUserFixtures.adminUser;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        const {getByTestId  } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByTestId("appnavbar-articles-dropdown")).toBeInTheDocument());
+        const dropdown = getByTestId("appnavbar-articles-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();
+        await waitFor( () => expect(getByTestId(/appnavbar-articles-create/)).toBeInTheDocument() );
+
+    });
+
+
+    test("renders the ucsbdates menu correctly for a user", async () => {
+
+        const currentUser = currentUserFixtures.userOnly;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        const {getByTestId  } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByTestId("appnavbar-ucsbdates-dropdown")).toBeInTheDocument());
+        const dropdown = getByTestId("appnavbar-ucsbdates-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();
+        await waitFor( () => expect(getByTestId("appnavbar-ucsbdates-list")).toBeInTheDocument() );
+
+    });
+
+    test("renders the ucsbdates menu correctly for an admin", async () => {
+
+        const currentUser = currentUserFixtures.adminUser;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        const {getByTestId  } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByTestId("appnavbar-ucsbdates-dropdown")).toBeInTheDocument());
+        const dropdown = getByTestId("appnavbar-ucsbdates-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();
+        await waitFor( () => expect(getByTestId(/appnavbar-ucsbdates-create/)).toBeInTheDocument() );
+
+    });
+
+    test("renders the diningcommons menu correctly for an admin", async () => {
+
+        const currentUser = currentUserFixtures.adminUser;
+        const systemInfo = systemInfoFixtures.showingBoth;
+
+        const doLogin = jest.fn();
+
+        const {getByTestId  } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} systemInfo={systemInfo} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByTestId("appnavbar-dining-commons-dropdown")).toBeInTheDocument());
+        const dropdown = getByTestId("appnavbar-dining-commons-dropdown");
+        const aElement = dropdown.querySelector("a");
+        expect(aElement).toBeInTheDocument();
+        aElement?.click();
+        await waitFor( () => expect(getByTestId(/appnavbar-dining-commons-list/)).toBeInTheDocument() );
+
+    });
+
 });
