@@ -4,7 +4,7 @@ import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/ArticlesUti
 import { _useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 
-export default function ArticlesTable({ article, currentUser }) {
+export default function ArticlesTable({ articles, currentUser }) {
 
     // const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ export default function ArticlesTable({ article, currentUser }) {
     // const columnsToDisplay = columns;
 
     return <OurTable
-        data={article}
+        data={articles}
         columns={columnsToDisplay}
         testid={testid}
     />;
