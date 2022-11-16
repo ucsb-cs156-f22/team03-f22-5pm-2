@@ -2,6 +2,7 @@ import OurTable, { ButtonColumn } from "main/components/OurTable";
 import { useBackendMutation } from "main/utils/useBackend";
 import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/recommendationUtils"
 //import { useNavigate } from "react-router-dom";
+
 import { hasRole } from "main/utils/currentUser";
 
 export default function RecommendationTable({ recommendation, currentUser }) {
