@@ -1,11 +1,10 @@
 import OurTable, { ButtonColumn } from "main/components/OurTable";
 import { useBackendMutation } from "main/utils/useBackend";
-import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/recommendationUtils"
-//import { useNavigate } from "react-router-dom";
-
+import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/reviewUtils"
+// import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 
-export default function RecommendationTable({ recommendation, currentUser }) {
+export default function ReviewTable({ menuItem, currentUser }) {
 
     // const navigate = useNavigate();
 
@@ -17,7 +16,7 @@ export default function RecommendationTable({ recommendation, currentUser }) {
     const deleteMutation = useBackendMutation(
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
-        ["/api/recommendation/all"]
+        ["/api/menuitemreview/all"]
     );
     // Stryker enable all 
 
@@ -30,43 +29,39 @@ export default function RecommendationTable({ recommendation, currentUser }) {
             accessor: 'id',
         },
         {
-            Header: 'Requester Email',
-            accessor: 'requesterEmail',
+            Header: 'Item ID',
+            accessor: 'itemId',
         },
         {
-            Header: 'Professor Email',
-            accessor: 'professorEmail',
+            Header: 'Comments',
+            accessor: 'comments',
         },
         {
-            Header: 'Explanation',
-            accessor: 'explanation',
+            Header: 'Date Reviewed',
+            accessor: 'dateReviewed',
         },
         {
-            Header: 'Date Requested',
-            accessor: 'dateRequested',
+            Header: 'Reviewer Email',
+            accessor: 'reviewerEmail',
         },
         {
-            Header: 'Date Needed',
-            accessor: 'dateNeeded',
-        },
-        {
-            Header: 'Done',
-            accessor: 'done',
+            Header: 'Stars',
+            accessor: 'stars',
         }
     ];
 
     const columnsIfAdmin = [
         ...columns,
         // ButtonColumn("Edit", "primary", editCallback, "ReviewTable"),
-        ButtonColumn("Delete", "danger", deleteCallback, "RecommendationTable")
+        ButtonColumn("Delete", "danger", deleteCallback, "ReviewTable")
     ];
 
     const columnsToDisplay = hasRole(currentUser, "ROLE_ADMIN") ? columnsIfAdmin : columns;
 
 
     return <OurTable
-        data={recommendation}
+        data={menuItem}
         columns={columnsToDisplay}
-        testid={"RecommendationTable"}
+        testid={"ReviewTable"}
     />;
 };
