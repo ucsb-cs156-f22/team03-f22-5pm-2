@@ -13,16 +13,11 @@ import DiningCommonsEditPage from "main/pages/DiningCommons/DiningCommonsEditPag
 
 import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
 
+
 import UCSBDatesIndexPage from "main/pages/UCSBDates/UCSBDatesIndexPage";
 import UCSBDatesCreatePage from "main/pages/UCSBDates/UCSBDatesCreatePage";
 import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
 
-import DiningCommonsMenuItemIndexPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemIndexPage";
-import DiningCommonsMenuItemCreatePage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemCreatePage";
-import DiningCommonsMenuItemEditPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemEditPage";
-import HelpRequestIndexPage from "main/pages/HelpRequest/HelpRequestIndexPage.js"
-import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganizationsIndexPage";
-import ReviewIndexPage from "main/pages/MenuItemReview/ReviewIndexPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
@@ -68,8 +63,7 @@ function App() {
         {
           hasRole(currentUser, "ROLE_USER") && (
             <>
-		  <Route exact path="/ucsbdates/list" element={<UCSBDatesIndexPage />} />
-		  <Route exact path="/UCSBOrganizations/list" element={<UCSBOrganizationsIndexPage />} />
+              <Route exact path="/ucsbdates/list" element={<UCSBDatesIndexPage />} />
             </>
           )
         }
