@@ -25,6 +25,7 @@ import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganiz
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
 import "bootstrap/dist/css/bootstrap.css";
+import RecommendationIndexPage from "main/pages/Recommendation/RecommendationIndexPage";
 
 
 function App() {
@@ -82,6 +83,13 @@ function App() {
         {
           hasRole(currentUser, "ROLE_USER") && (
             <>
+              <Route exact path="/recommendation/list" element={<RecommendationIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
               <Route exact path="/helprequests/list" element={<HelpRequestIndexPage />} />
             </>
           )
@@ -104,6 +112,13 @@ function App() {
           hasRole(currentUser, "ROLE_USER") && (
             <>
               <Route exact path="/diningCommonsMenuItem/list" element={<DiningCommonsMenuItemIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_ADMIN") && (
+            <>
+              <Route exact path="/recommendation/create" element={<RecommendationIndexPage />} />
             </>
           )
         }
