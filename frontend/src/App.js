@@ -12,9 +12,12 @@ import DiningCommonsCreatePage from "main/pages/DiningCommons/DiningCommonsCreat
 import DiningCommonsEditPage from "main/pages/DiningCommons/DiningCommonsEditPage";
 
 import UCSBDatesIndexPage from "main/pages/UCSBDates/UCSBDatesIndexPage";
-// import UCSBDatesCreatePage from "main/pages/UCSBDates/UCSBDatesCreatePage";
-// import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
+import UCSBDatesCreatePage from "main/pages/UCSBDates/UCSBDatesCreatePage";
+import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
 
+import DiningCommonsMenuItemIndexPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemIndexPage";
+import DiningCommonsMenuItemCreatePage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemCreatePage";
+import DiningCommonsMenuItemEditPage from "main/pages/DiningCommonsMenuItem/DiningCommonsMenuItemEditPage";
 import HelpRequestIndexPage from "main/pages/HelpRequest/HelpRequestIndexPage.js"
 import UCSBOrganizationsIndexPage from "main/pages/UCSBOrganizations/UCSBOrganizationsIndexPage";
 import ReviewIndexPage from "main/pages/MenuItemReview/ReviewIndexPage";
@@ -87,6 +90,21 @@ function App() {
           hasRole(currentUser, "ROLE_USER") && (
             <>
               <Route exact path="/menuitemreview/list" element={<ReviewIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/diningCommonsMenuItem/list" element={<DiningCommonsMenuItemIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_ADMIN") && (
+            <>
+              <Route exact path="/diningCommonsMenuItem/create" element={<DiningCommonsMenuItemCreatePage />} />
+              <Route exact path="/diningCommonsMenuItem/edit/:id" element={<DiningCommonsMenuItemEditPage />} />
             </>
           )
         }
