@@ -71,14 +71,14 @@ function App() {
             </>
           )
         }
-        {/* {
+        { {
           hasRole(currentUser, "ROLE_ADMIN") && (
             <>
               <Route exact path="/ucsbdates/create" element={<UCSBDatesCreatePage />} />
               <Route exact path="/ucsbdates/edit/:id" element={<UCSBDatesEditPage />} />
             </>
           )
-        } */}
+        } }
         {
           hasRole(currentUser, "ROLE_USER") && (
             <>
