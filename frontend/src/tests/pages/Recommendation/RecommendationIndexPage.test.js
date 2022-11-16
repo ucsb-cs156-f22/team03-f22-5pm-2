@@ -1,4 +1,4 @@
-import { fireEvent, waitFor, render } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import RecommendationIndexPage from "main/pages/Recommendation/RecommendationIndexPage";
@@ -9,7 +9,7 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { recommendationFixtures } from "fixtures/recommendationFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import mockConsole from "jest-mock-console";
+import _mockConsole from "jest-mock-console";
 
 
 const mockToast = jest.fn();
@@ -21,6 +21,13 @@ jest.mock('react-toastify', () => {
         toast: (x) => mockToast(x)
     };
 });
+
+const mockedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockedNavigate
+}));
 
 describe("RecommendationIndexPage tests", () => {
 
@@ -74,7 +81,7 @@ describe("RecommendationIndexPage tests", () => {
 
     });
 
-    test("renders three requests without crashing for regular user", async () => {
+    test("renders three recommendations without crashing for regular user", async () => {
         setupUserOnly();
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/recommendation/all").reply(200, recommendationFixtures.threeRecommendations);
@@ -87,13 +94,13 @@ describe("RecommendationIndexPage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); });
+        await waitFor(  () => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2"); } );
         expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
         expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
 
     });
 
-    test("renders three dates without crashing for admin user", async () => {
+    test("renders three recommendations without crashing for admin user", async () => {
         setupAdminUser();
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/recommendation/all").reply(200, recommendationFixtures.threeRecommendations);
@@ -118,8 +125,6 @@ describe("RecommendationIndexPage tests", () => {
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/recommendation/all").timeout();
 
-        const restoreConsole = mockConsole();
-
         const { queryByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
@@ -129,7 +134,6 @@ describe("RecommendationIndexPage tests", () => {
         );
 
         await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
-        restoreConsole();
 
         expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
     });
@@ -139,7 +143,7 @@ describe("RecommendationIndexPage tests", () => {
 
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/recommendation/all").reply(200, recommendationFixtures.threeRecommendations);
-        axiosMock.onDelete("/api/recommendation").reply(200, "Recommendation with id 2 was deleted");
+        axiosMock.onDelete("/api/recommendation").reply(200, "RecommendationRequest with id 1 was deleted");
 
 
         const { getByTestId } = render(
@@ -157,13 +161,13 @@ describe("RecommendationIndexPage tests", () => {
 
         const deleteButton = getByTestId(`${testId}-cell-row-0-col-Delete-button`);
         expect(deleteButton).toBeInTheDocument();
-       
+
         fireEvent.click(deleteButton);
 
-        await waitFor(() => { expect(mockToast).toBeCalledWith("Recommendation with id 2 was deleted") });
+        await waitFor(() => { expect(mockToast).toBeCalledWith("RecommendationRequest with id 1 was deleted") });
 
     });
 
-});
 
+});
 
