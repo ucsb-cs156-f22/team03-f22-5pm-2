@@ -1,5 +1,5 @@
 import {  render } from "@testing-library/react";
-import { ArticlesFixtures } from "fixtures/ArticlesFixtures";
+import { articlesFixtures } from "fixtures/ArticlesFixtures";
 import ArticlesTable from "main/components/Articles/ArticlesTable";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
@@ -23,7 +23,7 @@ describe("ArticlesTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <ArticlesTable Articles={[]} currentUser={currentUser} />
+          <ArticlesTable articles={[]} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
@@ -35,7 +35,7 @@ describe("ArticlesTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <ArticlesTable Articles={[]} currentUser={currentUser} />
+          <ArticlesTable articles={[]} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
@@ -48,7 +48,7 @@ describe("ArticlesTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <ArticlesTable Articles={[]} currentUser={currentUser} />
+          <ArticlesTable articles={[]} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
@@ -62,7 +62,7 @@ describe("ArticlesTable tests", () => {
     const { getByText, getByTestId } = render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <ArticlesTable Articles={ArticlesFixtures.threeArticles} currentUser={currentUser} />
+          <ArticlesTable articles={articlesFixtures.threeArticles} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
 
