@@ -2,12 +2,14 @@ import React from 'react'
 import { useBackend } from 'main/utils/useBackend'; // use prefix indicates a React Hook
 
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
+import RecommendationTable from 'main/components/Recommendation/RecommendationTable';
+import { useCurrentUser } from 'main/utils/currentUser';
 
 export default function RecommendationIndexPage() {
 
-  // const currentUser = useCurrentUser();
+  const currentUser = useCurrentUser();
 
-  const { error: _error, status: _status } =
+  const { data: request, error: _error, status: _status } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
       ["/api/recommendation/all"],
@@ -20,7 +22,7 @@ export default function RecommendationIndexPage() {
     <BasicLayout>
       <div className="pt-2">
         <h1>Recommendation Request</h1>
-        <p>Recommendation Request index page</p>
+        <RecommendationTable recommendation={request} currentUser={currentUser} />
       </div>
     </BasicLayout>
   );
