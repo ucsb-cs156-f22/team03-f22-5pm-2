@@ -12,7 +12,7 @@ export default function UCSBOrganizationsTable({ orgs, currentUser }) {
     const deleteMutation = useBackendMutation(
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
-        ["/api/UCSBOrganizations/all"]
+        ["/api/UCSBOrganization/all"]
     );
     // Stryker enable all 
 
